@@ -2,13 +2,13 @@ import ollama
 
 
 
-with open('remiface.png', 'rb') as file:
+with open('exemple.jpg', 'rb') as file:
   response = ollama.chat(
     model='llava',
     messages=[
       {
         'role': 'user',
-        'content': 'describe image ',
+        'content': 'is it barack obama?',
         'images': [file.read()],
       },
     ],

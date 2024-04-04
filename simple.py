@@ -2,9 +2,9 @@ import ollama
 
 stream = ollama.chat(
     # model='mistral',
-    model='yarn-mistral:7b-128k',
+    model='mistral:latest',
 
-    messages=[{'role': 'user', 'content': 'Why is the sky blue?'}],
+    messages=[{'role': 'user', 'content': 'en francais un exemple des enseignemets de buddha'}],
     stream=True,
 )
 

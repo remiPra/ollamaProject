@@ -13,3 +13,15 @@ mistral:latest          61e88e884507    4.1 GB  10 minutes ago
 nomic-embed-text:latest 0a109f422b47    274 MB  15 minutes ago
 
 pour chacun ollama pull
+
+# img.py 
+utilisation de la reconnaissance d'image model llava 
+
+# embed-text
+text 
+
+# chroma-embeddigs
+c'est un fichier qui va vouis permettra avec chroma de faire l'embeddings pour ensuite l'utiliser 
+
+# chroma as question
+une fois le vectorstore fait c'est la que vous pourrez faire la question

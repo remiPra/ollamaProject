@@ -8,6 +8,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.output_parsers import PydanticOutputParser
 from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
 
 model_local = ChatOllama(model="mistral")
 
@@ -21,8 +23,19 @@ model_local = ChatOllama(model="mistral")
 # text_splitter = CharacterTextSplitter.from_tiktoken_encoder(chunk_size=7500, chunk_overlap=100)
 # doc_splits = text_splitter.split_documents(docs_list)
 
+
+# 1 :exemple court
+# loader = PyPDFLoader("Invoice.pdf")
+# print(loader)
+# doc_splits = loader.load_and_split()
+
+
+# 2 : exemple long
 loader = PyPDFLoader("Invoice.pdf")
-doc_splits = loader.load_and_split()
+docs = loader.load()
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+doc_splits = text_splitter.split_documents(docs)
 
 # 2. Convert documents to Embeddings and store them
 vectorstore = Chroma.from_documents(
@@ -32,16 +45,11 @@ vectorstore = Chroma.from_documents(
 )
 retriever = vectorstore.as_retriever()
 
-# 3. Before RAG
-print("Before RAG\n")
-before_rag_template = "What is {topic}"
-before_rag_prompt = ChatPromptTemplate.from_template(before_rag_template)
-before_rag_chain = before_rag_prompt | model_local | StrOutputParser()
-print(before_rag_chain.invoke({"topic": "Ollama"}))
+print(retriever)
 
 # 4. After RAG
 print("\n########\nAfter RAG\n")
-after_rag_template = """Answer the question in french based only on the following context:
+after_rag_template = """Answer the question based only on the following context:
 {context}
 Question: {question}
 """
@@ -52,5 +60,5 @@ after_rag_chain = (
     | model_local
     | StrOutputParser()
 )
-print(after_rag_chain.invoke("What is the main fact?"))
+print(after_rag_chain.invoke("de quoi cela parle "))
 
